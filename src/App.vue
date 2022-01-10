@@ -1,26 +1,49 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <GameContainer></GameContainer>
+    <!-- <div>
+      <button v-on:click="show = !show">Toggle</button>
+      <transition name="fade">
+        <p>hello</p>
+      </transition>
+    </div> -->
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import GameContainer from "./components/GameContainer.vue";
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    GameContainer,
+  },
+};
+// export default {
+//   data() {
+//     return {
+//       show: false,
+//     };
+//   },
+// };
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+#prize {
+  position: absolute;
+}
+
+#prize > img {
+  position: absolute;
+}
+#prize > span {
+  position: absolute;
+  background: white;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
