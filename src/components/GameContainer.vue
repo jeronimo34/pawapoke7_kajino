@@ -11,6 +11,12 @@
     <DaiceBoard ref="daiceBoard" :number="targetNumber"></DaiceBoard>
     <Girl></Girl>
     <PawapokeKun></PawapokeKun>
+    <Win ref="win"></Win>
+    <Confirmation
+      @selectYes="continueGame(true)"
+      @selectNo="continueGame(false)"
+      ref="confirmation"
+    ></Confirmation>
   </div>
 </template>
 
@@ -22,6 +28,8 @@ import SpeechBubble from "./SpeechBubble.vue";
 import DaiceBoard from "./DaiceBoard.vue";
 import Girl from "./Girl.vue";
 import PawapokeKun from "./PawapokeKun.vue";
+import Win from "./Win.vue";
+import Confirmation from "./Confirmation.vue";
 
 export default {
   components: {
@@ -32,6 +40,8 @@ export default {
     Girl,
     DaiceBoard,
     PawapokeKun,
+    Win,
+    Confirmation,
   },
   data: function () {
     return {
@@ -46,6 +56,21 @@ export default {
     this.$refs.gameboard.setNGNumber(this.targetNumber);
   },
   methods: {
+    continueGame: function (val) {
+      if (val === true) {
+        this.$refs.gameboard.clearNGNumbers();
+        this.targetNumber = getRandomInt(4, 17);
+        this.$refs.gameboard.setNGNumber(this.targetNumber);
+        this.state = 10;
+        this.text = "いらっしゃいませ!";
+      } else {
+        this.$refs.gameboard.clearNGNumbers();
+        this.targetNumber = getRandomInt(4, 17);
+        this.$refs.gameboard.setNGNumber(this.targetNumber);
+        this.state = 11;
+        this.text = "帰れ!";
+      }
+    },
     selectBigOrLittle: function (bigOrLittle) {
       // alert(bigOrLittle);
       this.bigOrLittle = bigOrLittle;
@@ -76,9 +101,14 @@ export default {
       } else if (state === 4) {
         // 大が選択された
         // 横から「開始」の文字がフェードイン
-        this.text = "開始";
-        this.state = 5;
-        this.$refs.daiceBoard.startDaice();
+        // this.text = "開始";
+        this.$refs.win.showStartText();
+
+        setTimeout(() => {
+          this.$refs.win.hideAll();
+          this.state = 5;
+          this.$refs.daiceBoard.startDaice();
+        }, 1500);
       } else if (state === 5) {
         //daice1
         this.$refs.daiceBoard.stopDaice();
@@ -99,31 +129,41 @@ export default {
         if (this.bigOrLittle === 1) {
           if (result > this.targetNumber) {
             this.text = "成功";
+            this.$refs.win.showWinText();
           } else {
             this.text = "失敗";
+            this.$refs.win.showLoseText();
           }
         } else {
           if (result < this.targetNumber) {
             this.text = "成功";
+            this.$refs.win.showWinText();
           } else {
             this.text = "失敗";
+            this.$refs.win.showLoseText();
           }
         }
         this.state = 8;
       } else if (state === 8) {
+        this.$refs.win.hideAll();
         this.text = "まだ続ける?";
+        this.$refs.confirmation.toggle(true);
         // 確認ダイアログを出す
         this.state = 9;
       } else if (state === 9) {
-        this.text = "はいが選択された。";
-        setTimeout(() => {
-          // 初期化
-          this.$refs.gameboard.clearNGNumbers();
-          this.targetNumber = getRandomInt(4, 17);
-          this.$refs.gameboard.setNGNumber(this.targetNumber);
-          this.state = 1;
-          this.text = "いらっしゃいませ!";
-        }, 1000);
+        // this.text = "はいが選択された。";
+        // setTimeout(() => {
+        //   // 初期化
+        //   this.$refs.gameboard.clearNGNumbers();
+        //   this.targetNumber = getRandomInt(4, 17);
+        //   this.$refs.gameboard.setNGNumber(this.targetNumber);
+        //   this.state = 1;
+        //   this.text = "いらっしゃいませ!";
+        // }, 1000);
+      } else if (state === 10) {
+        this.state = 1;
+      } else {
+        this.state = -1;
       }
     },
   },
