@@ -25,6 +25,13 @@ export default {
       this.show = true;
     }, this.delay);
   },
+  methods: {
+    delayShow: function () {
+      setTimeout(() => {
+        this.show = true;
+      }, this.delay);
+    },
+  },
 };
 </script>
 

@@ -1,22 +1,34 @@
 <template>
-  <img src="@/assets/PawapokeKun.png" />
+  <div v-bind:style="this.styleObject" id="pawapoke-kun"></div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      title: "Body",
-      text: "Have a good day!",
+      imageIndex: 0,
     };
+  },
+  mounted: function () {},
+  methods: {},
+  watch: {},
+  computed: {
+    styleObject: function () {
+      let styleObject = {};
+      styleObject.backgroundPositionX = this.imageIndex * 80 + "px";
+      return styleObject;
+    },
   },
 };
 </script>
 
 <style scoped>
-img {
+#pawapoke-kun {
+  background: url("~@/assets/PawapokeKun.png") repeat;
+  width: 80px;
+  height: 80px;
   position: absolute;
-  left: 296px;
+  left: 330px;
   top: 240px;
 }
 </style>

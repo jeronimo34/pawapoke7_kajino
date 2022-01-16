@@ -9,6 +9,7 @@
       :choosed="prize.choosed"
       :number="prize.number"
       :delay="80 * index"
+      ref="prizes"
     ></Prize>
     <img src="@/assets/GameBoard.png" />
   </div>
@@ -152,6 +153,11 @@ export default {
       for (let i = 0; i < this.prizes.length; ++i) {
         this.prizes[i].ng = false;
         this.prizes[i].choosed = false;
+      }
+
+      for (let i = 0; i < this.$refs.prizes.length; ++i) {
+        this.$refs.prizes[i].show = false;
+        this.$refs.prizes[i].delayShow();
       }
     },
     // NG番号セット
